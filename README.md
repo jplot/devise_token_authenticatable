@@ -8,9 +8,11 @@ Add this line to your application's Gemfile:
 gem 'devise_token_authenticatable'
 ```
 
-install it yourself as:
+### Controllers
 
-Customize Devise::SessionsController. You need to create and return token in #create
+Create an `users` directory in your `controllers` directory.
+In this `users` directory, create a `sessions` controller.
+Override the `create` action like this :
 
 ```ruby
 class Users::SessionsController < Devise::SessionsController
@@ -22,7 +24,8 @@ class Users::SessionsController < Devise::SessionsController
 end
 ```
 
-Customize Devise::RegistrationsController. add this code
+In the same `users` directory than previous, create a `registrations` controller.
+Update it like this :
 
 ```ruby
 class Users::RegistrationsController < Devise::RegistrationsController
@@ -39,6 +42,30 @@ end
 ```
 
 Use "before_action :token_authenticate_user!" instead of "before_action :authenticate_user!"
+
+### Models
+
+In your `user` model, add the module `:token_authenticatable` next to other devise's modules
+Example :
+
+```ruby
+class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable and :omniauthable
+  devise :database_authenticatable, :registerable, :timeoutable,
+         :recoverable, :rememberable, :trackable, :validatable,
+         :token_authenticatable
+end
+```
+
+### Configs
+
+You can add uncomment the `timeoutable` devise module to set an expiry date to your token.
+Choose token's lifetime in `devise.rb`
+
+```ruby
+config.timeout_in = 30.minutes
+```
 
 ## License
 
