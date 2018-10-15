@@ -10,7 +10,9 @@ module Devise
       end
 
       def access_token
-        Base64.strict_encode64(JWT.encode({ id: id, last_request_at: respond_to?(:timedout?) && Time.now.utc }, Devise.secret_key, 'HS256'))
+        current_sign_in_at = respond_to?(:timedout?) && Time.now.utc
+
+        Base64.strict_encode64(JWT.encode({ id: id, current_sign_in_at: current_sign_in_at }, Devise.secret_key, 'HS256'))
       end
     end
   end
