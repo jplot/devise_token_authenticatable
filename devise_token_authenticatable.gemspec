@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Jonathan PHILIPPE']
   spec.email         = ['pretrine@gmail.com']
 
-  spec.summary       = %q{Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{Write a longer description or delete this line.}
+  spec.summary       = %q{Token module for Devise}
+  spec.description   = %q{This gem is a token module for Devise. It generates a new token at each request.}
   spec.homepage      = ''
   spec.license       = 'MIT'
 
