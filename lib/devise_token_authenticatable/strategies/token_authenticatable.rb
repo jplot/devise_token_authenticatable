@@ -4,7 +4,7 @@ require 'jwt'
 module Devise
   module Strategies
     class TokenAuthenticatable < Authenticatable
-      attr_accessor :user_id, :current_sign_in_at
+      attr_accessor :user_id, :current_sign_in_at, :current_sign_in_ip
 
       def authenticate!
         env['devise.skip_trackable'] = true
@@ -13,7 +13,7 @@ module Devise
 
         fail(:timeout) if resource.respond_to?(:timedout?) && resource.timedout?(current_sign_in_at)
 
-        if validate(resource)
+        if validate(resource) { !resource.respond_to?(:current_sign_in_ip) || request.remote_ip == current_sign_in_ip }
           success!(resource)
         end
 
@@ -38,6 +38,7 @@ module Devise
         self.authentication_hash, self.authentication_type = {}, auth_type
         self.user_id = auth_values['id']
         self.current_sign_in_at = auth_values['current_sign_in_at']
+        self.current_sign_in_ip = auth_values['current_sign_in_ip']
 
         parse_authentication_key_values(auth_values, ['id'])
       end
