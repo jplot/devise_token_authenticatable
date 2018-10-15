@@ -4,14 +4,16 @@ require 'jwt'
 module Devise
   module Strategies
     class TokenAuthenticatable < Authenticatable
-      attr_accessor :user_id, :last_request_at
+      attr_accessor :user_id, :current_sign_in_at
 
       def authenticate!
         env['devise.skip_trackable'] = true
 
         resource = user_id.present? && mapping.to.find_for_database_authentication(authentication_hash)
 
-        if validate(resource) { !resource.respond_to?(:timedout?) || !resource.timedout?(last_request_at) }
+        fail(:timeout) if resource.respond_to?(:timedout?) && resource.timedout?(current_sign_in_at)
+
+        if validate(resource)
           success!(resource)
         end
 
@@ -35,7 +37,7 @@ module Devise
       def with_authentication_hash(auth_type, auth_values)
         self.authentication_hash, self.authentication_type = {}, auth_type
         self.user_id = auth_values['id']
-        self.last_request_at = auth_values['last_request_at']
+        self.current_sign_in_at = auth_values['current_sign_in_at']
 
         parse_authentication_key_values(auth_values, ['id'])
       end
@@ -48,7 +50,8 @@ module Devise
         return {} unless request.authorization && request.authorization =~ /^Bearer (.*)/mi
 
         payload = JWT.decode(Base64.decode64($1), Devise.secret_key, true, { algorithm: 'HS256' }).first
-        payload.merge('payload' => Time.parse(payload['last_request_at'])) if payload['last_request_at'].present?
+        payload['current_sign_in_at'] = Time.parse(payload['current_sign_in_at']) if payload['current_sign_in_at'].present?
+        payload
       rescue JWT::DecodeError
         {}
       end
