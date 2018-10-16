@@ -11,7 +11,7 @@ module Devise
 
         resource = user_id.present? && mapping.to.find_for_database_authentication(authentication_hash)
 
-        fail(:timeout) if resource.respond_to?(:timedout?) && resource.timedout?(current_sign_in_at)
+        fail!(:timeout) if resource.respond_to?(:timedout?) && resource.timedout?(current_sign_in_at)
 
         if validate(resource) { !resource.respond_to?(:current_sign_in_ip) || request.remote_ip == current_sign_in_ip }
           success!(resource)
