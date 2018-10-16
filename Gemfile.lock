@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    devise_token_authenticatable (0.1.1)
+    devise_token_authenticatable (0.1.2)
       devise (~> 4.4, >= 4.4.3)
       jwt (~> 2.1)
 
@@ -83,4 +83,4 @@ DEPENDENCIES
   rake (~> 10.0)
 
 BUNDLED WITH
-   1.16.2
+   1.16.6
