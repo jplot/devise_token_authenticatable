@@ -13,7 +13,7 @@ module Devise
 
         return fail(:timeout) if resource.respond_to?(:timedout?) && !env['devise.skip_timeout'] && resource.timedout?(current_sign_in_at)
 
-        if validate(resource) { !resource.respond_to?(:current_sign_in_ip) || request.remote_ip == current_sign_in_ip }
+        if validate(resource) { !resource.token_ip_verifier || request.remote_ip == current_sign_in_ip }
           success!(resource)
         end
 
