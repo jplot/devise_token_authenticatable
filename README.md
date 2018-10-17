@@ -42,14 +42,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 end
 ```
 
-Add this in your application controller
-
-```ruby
-class ApplicationController < ActionController::Base
-  include Devise::Controllers::TokenAuthenticatable
-end
-```
-
 Use "before_action :token_authenticate_user!" instead of "before_action :authenticate_user!"
 
 ### Models
