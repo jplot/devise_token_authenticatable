@@ -10,6 +10,15 @@ gem 'devise_token_authenticatable'
 
 ### Controllers
 
+For the controllers only, we provide the generator to install the gem.
+/!\ Warning, it will override `controllers/users/sessions_controller.rb` and `controllers/users/registrations_controller.rb` if they exist. /!\
+
+```ruby
+rails g devise_token_authenticatable:initializer
+```
+
+If you don't want to use the generator, you can install the gem manually (see below).
+
 Create an `users` directory in your `controllers` directory.
 In this `users` directory, create a `sessions` controller.
 Override the `create` action like this :
