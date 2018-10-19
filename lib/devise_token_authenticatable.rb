@@ -1,7 +1,6 @@
 require 'devise'
 require 'devise_token_authenticatable/models/token_authenticatable'
 require 'devise_token_authenticatable/strategies/token_authenticatable'
-require 'devise_token_authenticatable/generators/initializer_generator'
 require 'devise_token_authenticatable/rails'
 
 module Devise

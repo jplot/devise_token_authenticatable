@@ -1,3 +1,5 @@
+require 'rails/generators/base'
+
 # Je me suis servi de :
 
 # - la documentation des generators
